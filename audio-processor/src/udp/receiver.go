@@ -21,6 +21,6 @@ func CreateServer(
 			fmt.Println("Err", err)
 			continue
 		}
-		go onMessage(msgBuffer[:n])
+		onMessage(msgBuffer[:n])
 	}
 }
