@@ -9,22 +9,18 @@ import (
 func CreateServer(
 	onMessage func([]byte),
 ) {
-	serverAdd, err := net.ResolveUDPAddr("udp", os.Getenv("REMOTE_SERVER"))
-	if err != nil {
-		panic(err)
-	}
-	conn, err := net.ListenUDP("udp", serverAdd)
+	conn, err := net.ListenPacket("udp", os.Getenv("REMOTE_SERVER"))
 	if err != nil {
 		panic(err)
 	}
 	defer conn.Close()
 	msgBuffer := make([]byte, 1024)
 	for {
-		n, _, err := conn.ReadFromUDP(msgBuffer)
+		n, _, err := conn.ReadFrom(msgBuffer)
 		if err != nil {
 			fmt.Println("Err", err)
 			continue
 		}
-		onMessage(msgBuffer[:n])
+		go onMessage(msgBuffer[:n])
 	}
 }
