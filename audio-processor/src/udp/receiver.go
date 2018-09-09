@@ -14,8 +14,8 @@ func CreateServer(
 		panic(err)
 	}
 	defer conn.Close()
-	msgBuffer := make([]byte, 1024)
 	for {
+		msgBuffer := make([]byte, 1024)
 		n, _, err := conn.ReadFrom(msgBuffer)
 		if err != nil {
 			fmt.Println("Err", err)
